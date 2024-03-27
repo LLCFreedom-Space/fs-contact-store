@@ -9,20 +9,133 @@
 ![example workflow](https://github.com/LLCFreedom-Space/fs-contact-store/actions/workflows/test.yml/badge.svg?branch=main)
 [![codecov](https://codecov.io/github/LLCFreedom-Space/fs-contact-store/graph/badge.svg?token=2EUIA4OGS9)](https://codecov.io/github/LLCFreedom-Space/fs-contact-store)
 
+`FSContactStore` is a Swift package that provides a convenient and easy-to-use interface for interacting with Apple's `Contacts` framework on iOS and macOS.
 
-            ## Contributions:
+## Features:
 
-            We welcome contributions to this project! Please feel free to open issues or pull requests to help improve the package.
+* Simplified authorization handling for requesting access to contacts.
+* Flexible fetching options for retrieving contacts with filtering, sorting, and specifying properties to retrieve.
+* Support for unified contacts, which combine information from multiple sources.
+* Shared instance for quick access to common functionalities.
+* Customizable save requests to allow tailoring logic for adding, updating, and deleting contacts.
 
-            ## Links
+## Installation:
 
-            LLC Freedom Space – [@LLCFreedomSpace](https://twitter.com/llcfreedomspace) – [support@freedomspace.company](mailto:support@freedomspace.company)
+Add the package to your Package.swift file:
 
-            Distributed under the GNU AFFERO GENERAL PUBLIC LICENSE Version 3. See [LICENSE.md][license-url] for more information.
+```swift
+dependencies: [
+.package(url: "https://github.com/LLCFreedom-Space/fs-contact-store", from: "1.0.0")
+]
+```
 
-            [GitHub](https://github.com/LLCFreedom-Space)
+Import the package in your Swift files:
 
-            [swift-image]:https://img.shields.io/badge/swift-5.8-orange.svg
-            [swift-url]: https://swift.org/
-            [license-image]: https://img.shields.io/badge/License-GPLv3-blue.svg
-            [license-url]: LICENSE
+```swift
+import ContactStore
+```
+
+## Usage:
+
+1. Import the library:
+
+```swift
+import ContactStore
+```
+
+2. Accessing the Shared Instance:
+
+```swift
+let store = ContactStore.shared
+```
+
+3. Checking Authorization Status:
+
+```swift
+let status = store.authorizationStatus()
+
+if status != .authorized {
+do {
+try await store.requestAccess()
+} catch {
+// Handle access request error
+}
+}
+```
+
+4. Fetching Contacts:
+
+* Fetch all contacts with required keys:
+
+```swift
+do {
+let contacts = try await store.fetch()
+// Access contact properties here
+} catch {
+// Handle fetch error
+}
+```
+
+* Fetch contacts by name:
+
+```swift 
+let name = "John Doe"
+do {
+let contacts = try store.fetch(by: name)
+// ...
+} catch {
+// Handle fetch error
+}
+```
+
+5. Managing Contacts:
+* Adding a new contact:
+
+```swift
+let newContact = CNMutableContact()
+newContact.givenName = "Jane"
+newContact.familyName = "Smith"
+
+do {
+try store.add(newContact)
+} catch {
+// Handle add error
+}
+```
+
+* Updating a contact:
+```swift
+// ... modify contact properties
+try store.update(contact)
+```
+
+* Deleting a contact:
+
+```swift
+// ... select contact
+try store.delete(contact)
+```
+
+6. Customizing Save Requests (Optional):
+
+By default, `ContactStore` uses a standard `CNSaveRequest` instance. 
+You can modify the static closure `ContactStore.makeCNSaveRequest` to inject custom logic or provide different request implementations.
+
+
+
+## Contributions:
+
+We welcome contributions to this project! Please feel free to open issues or pull requests to help improve the package.
+
+## Links
+
+LLC Freedom Space – [@LLCFreedomSpace](https://twitter.com/llcfreedomspace) – [support@freedomspace.company](mailto:support@freedomspace.company)
+
+Distributed under the GNU AFFERO GENERAL PUBLIC LICENSE Version 3. See [LICENSE.md][license-url] for more information.
+
+ [GitHub](https://github.com/LLCFreedom-Space)
+
+[swift-image]:https://img.shields.io/badge/swift-5.8-orange.svg
+[swift-url]: https://swift.org/
+[license-image]: https://img.shields.io/badge/License-GPLv3-blue.svg
+[license-url]: LICENSE
