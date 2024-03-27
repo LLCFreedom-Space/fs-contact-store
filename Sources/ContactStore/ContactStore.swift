@@ -81,7 +81,8 @@ final class ContactStore: ContactStoreProtocol {
             fetchRequest.unifyResults = unifyResults
             do {
                 try autoreleasepool {
-                    try store.enumerateContacts(with: fetchRequest) { contact, pointer in
+                    // TODO: - Need implement handling of pointer in closure
+                    try store.enumerateContacts(with: fetchRequest) { contact, _ in
                         contacts.append(contact)
                     }
                 }

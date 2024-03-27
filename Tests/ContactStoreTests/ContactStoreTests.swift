@@ -84,7 +84,9 @@ final class ContactStoreTests: XCTestCase {
         contact.givenName = "Paul"
         try store.add(contact)
         let addedContact = try store.unifiedContact(withIdentifier: contact.identifier)
-        let copy = addedContact.mutableCopy() as! CNMutableContact
+        guard let copy = addedContact.mutableCopy() as? CNMutableContact else {
+            return XCTFail("Expected error not thrown")
+        }
         copy.givenName = "John"
         try store.update(copy)
         let contacts = try store.fetch(by: "John")
@@ -102,9 +104,11 @@ final class ContactStoreTests: XCTestCase {
         contact.givenName = "Paul"
         try store.add(contact)
         let addedContact = try store.unifiedContact(withIdentifier: contact.identifier)
-        let copy = addedContact.mutableCopy() as! CNMutableContact
+        guard let copy = addedContact.mutableCopy() as? CNMutableContact else {
+            return XCTFail("Expected error not thrown")
+        }
         try store.delete(copy)
         let contacts = try store.fetch(by: "Paul")
-        XCTAssertTrue(contacts.count == 0)
+        XCTAssertTrue(contacts.isEmpty)
     }
 }

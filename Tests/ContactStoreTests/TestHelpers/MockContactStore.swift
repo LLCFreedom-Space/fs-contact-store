@@ -51,7 +51,13 @@ final class MockContactStore: CNContactStore {
     ///   - fetchRequest: The fetch request specifying filtering and sorting criteria.
     ///   - block: The block called for each enumerated contact.
     /// - Throws: An error if set in `error` or no contacts are found.
-    override func enumerateContacts(with fetchRequest: CNContactFetchRequest, usingBlock block: (CNContact, UnsafeMutablePointer<ObjCBool>) -> Void) throws {
+    override func enumerateContacts(
+        with fetchRequest: CNContactFetchRequest,
+        usingBlock block: (
+            CNContact,
+            UnsafeMutablePointer<ObjCBool>
+        ) -> Void
+    ) throws {
         contacts.append(contact)
         if error != nil {
             throw CNError(.validationMultipleErrors)
@@ -59,7 +65,9 @@ final class MockContactStore: CNContactStore {
             throw CNError(.recordDoesNotExist)
         }
         
-        guard let contact = contacts.first else { return }
+        guard let contact = contacts.first else {
+            return
+        }
         var pointer: ObjCBool = false
         block(contact, &pointer)
     }
