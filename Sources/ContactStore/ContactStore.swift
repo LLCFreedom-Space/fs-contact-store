@@ -25,7 +25,7 @@
 @_exported import Contacts
 
 /// A class providing a convenient interface for interacting with the Contacts framework.
-final class ContactStore: ContactStoreProtocol {
+public final class ContactStore: ContactStoreProtocol {
     /// A shared instance of `ContactStore` for convenience.
     public static let shared = ContactStore()
     
