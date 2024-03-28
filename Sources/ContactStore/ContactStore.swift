@@ -33,8 +33,13 @@ public final class ContactStore: ContactStoreProtocol {
     private let store: CNContactStore
     
     /// A closure for creating `CNSaveRequest` instances, allowing for custom implementations.
-    static var makeCNSaveRequest: () -> CNSaveRequest = {
+    private static var makeCNSaveRequest: () -> CNSaveRequest = {
         CNSaveRequest()
+    }
+    
+    /// A closure for creating `CNAuthorizationStatus` instances, allowing for custom implementations.
+    private static var makeAuthorizationStatus: () -> CNAuthorizationStatus = {
+        CNContactStore.authorizationStatus(for: .contacts)
     }
     
     /// Initializes a `ContactStore` with the specified `CNContactStore` instance.
@@ -50,7 +55,8 @@ public final class ContactStore: ContactStoreProtocol {
     ///
     /// - Returns: The current authorization status (e.g., .authorized, .denied).
     public func authorizationStatus() -> CNAuthorizationStatus {
-        return CNContactStore.authorizationStatus(for: .contacts)
+        let status = Self.makeAuthorizationStatus
+        return status()
     }
     
     /// Requests authorization to access contacts asynchronously.
@@ -181,5 +187,21 @@ public final class ContactStore: ContactStoreProtocol {
         let request: CNSaveRequest = Self.makeCNSaveRequest()
         request.delete(cnContact)
         try store.execute(request)
+    }
+    
+    // MARK: - Testability
+    
+    /// Sets a custom closure for creating `CNSaveRequest` instances.
+    ///
+    /// - Parameter make: The closure that creates a `CNSaveRequest` instance.
+    func use(_ make: @escaping () -> CNSaveRequest) {
+        Self.makeCNSaveRequest = make
+    }
+    
+    /// Sets a custom closure for creating `CNAuthorizationStatus` instances.
+    ///
+    /// - Parameter make: The closure that creates a `CNAuthorizationStatus` instance.
+    func use(_ make: @escaping () -> CNAuthorizationStatus) {
+        Self.makeAuthorizationStatus = make
     }
 }

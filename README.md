@@ -120,8 +120,18 @@ try store.delete(contact)
 
 By default, `ContactStore` uses a standard `CNSaveRequest` instance. 
 You can modify the static closure `ContactStore.makeCNSaveRequest` to inject custom logic or provide different request implementations.
+**Important:** To modify the ContactStore.makeCNSaveRequest closure, you must use the use(_:) method.
 
+```swift
+ContactStore.use { request in
+  // Make changes to the request
+  // ...
+  return request
+}
+```
 
+This code updates the `ContactStore.makeCNSaveRequest` closure to accept a `CNSaveRequest` instance as an argument, 
+make any necessary changes to it, and then return the updated request.
 
 ## Contributions:
 

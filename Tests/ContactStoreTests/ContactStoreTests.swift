@@ -36,7 +36,21 @@ final class ContactStoreTests: XCTestCase {
     }
     
     func testAuthorizationStatus() {
-        XCTAssertEqual(ContactStore.shared.authorizationStatus(), CNAuthorizationStatus.authorized)
+        let denied = {
+            return CNAuthorizationStatus.denied
+        }
+        store.use(denied)
+        XCTAssertEqual(store.authorizationStatus(), CNAuthorizationStatus.denied)
+        let authorized = {
+            return CNAuthorizationStatus.authorized
+        }
+        store.use(authorized)
+        XCTAssertEqual(store.authorizationStatus(), CNAuthorizationStatus.authorized)
+        let notDetermined = {
+            return CNAuthorizationStatus.notDetermined
+        }
+        store.use(notDetermined)
+        XCTAssertEqual(store.authorizationStatus(), CNAuthorizationStatus.notDetermined)
     }
     
     func testFetchContacts() async {
