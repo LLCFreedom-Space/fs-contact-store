@@ -37,8 +37,8 @@ public final class ContactStore: ContactStoreProtocol {
         CNSaveRequest()
     }
     
-    /// A closure for creating `CNAuthorizationStatus` instances, allowing for custom implementations.
-    private static var makeAuthorizationStatus: () -> CNAuthorizationStatus = {
+    /// A closure for creating `CNAuthorizationStatus` instances, allowing set needed status.
+    private static var makeCNAuthorizationStatus: () -> CNAuthorizationStatus = {
         CNContactStore.authorizationStatus(for: .contacts)
     }
     
@@ -55,7 +55,7 @@ public final class ContactStore: ContactStoreProtocol {
     ///
     /// - Returns: The current authorization status (e.g., .authorized, .denied).
     public func authorizationStatus() -> CNAuthorizationStatus {
-        let status = Self.makeAuthorizationStatus
+        let status = Self.makeCNAuthorizationStatus
         return status()
     }
     
@@ -202,6 +202,6 @@ public final class ContactStore: ContactStoreProtocol {
     ///
     /// - Parameter make: The closure that creates a `CNAuthorizationStatus` instance.
     func use(_ make: @escaping () -> CNAuthorizationStatus) {
-        Self.makeAuthorizationStatus = make
+        Self.makeCNAuthorizationStatus = make
     }
 }

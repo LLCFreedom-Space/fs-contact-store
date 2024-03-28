@@ -11,7 +11,7 @@
 
 `FSContactStore` is a Swift package that provides a convenient and easy-to-use interface for interacting with Apple's `Contacts` framework on iOS and macOS.
 
-## Features:
+## Features
 
 * Simplified authorization handling for requesting access to contacts.
 * Flexible fetching options for retrieving contacts with filtering, sorting, and specifying properties to retrieve.
@@ -19,7 +19,7 @@
 * Shared instance for quick access to common functionalities.
 * Customizable save requests to allow tailoring logic for adding, updating, and deleting contacts.
 
-## Installation:
+## Installation
 
 Add the package to your Package.swift file:
 
@@ -35,7 +35,7 @@ Import the package in your Swift files:
 import ContactStore
 ```
 
-## Usage:
+## Usage
 
 1. Import the library:
 
@@ -120,7 +120,7 @@ try store.delete(contact)
 
 By default, `ContactStore` uses a standard `CNSaveRequest` instance. 
 You can modify the static closure `ContactStore.makeCNSaveRequest` to inject custom logic or provide different request implementations.
-**Important:** To modify the ContactStore.makeCNSaveRequest closure, you must use the use(_:) method.
+**Important:** To modify the `ContactStore.makeCNSaveRequest` closure, you must use the `use(_:)` method.
 
 ```swift
 ContactStore.use { request in
@@ -133,7 +133,33 @@ ContactStore.use { request in
 This code updates the `ContactStore.makeCNSaveRequest` closure to accept a `CNSaveRequest` instance as an argument, 
 make any necessary changes to it, and then return the updated request.
 
-## Contributions:
+7. Customizing Authorization Status (Optional):
+
+By default, `ContactStore` uses the actual authorization status from the system's `CNContactStore`. 
+However, you can override this behavior with a custom closure to inject specific authorization statuses for testing or other purposes.
+
+Here's how to customize the authorization status:
+
+**Use the `use(_:)` method:**
+
+- Call the `use(_:)` method on `ContactStore` to provide a custom closure for creating `CNAuthorizationStatus` instances.
+- The closure accepts no arguments and returns a `CNAuthorizationStatus` value.
+ 
+ **Implement the closure logic:**
+
+- Within the closure, specify the desired authorization status to be returned. 
+  You can return a fixed value or implement more complex logic based on your needs.
+
+```swift
+ContactStore.use {
+    return .denied // Simulate denied authorization status
+}
+
+let currentStatus = ContactStore.authorizationStatus()
+// currentStatus will now be .denied
+```
+
+## Contributions
 
 We welcome contributions to this project! Please feel free to open issues or pull requests to help improve the package.
 
