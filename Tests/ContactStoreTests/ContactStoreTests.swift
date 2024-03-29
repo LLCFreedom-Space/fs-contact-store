@@ -23,6 +23,7 @@
 //
 
 import XCTest
+import Contacts
 @testable import ContactStore
 
 final class ContactStoreTests: XCTestCase {

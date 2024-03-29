@@ -37,19 +37,19 @@ import ContactStore
 
 ## Usage
 
-1. Import the library:
+### Import the library
 
 ```swift
 import ContactStore
 ```
 
-2. Accessing the Shared Instance:
+### Accessing the Shared Instance
 
 ```swift
 let store = ContactStore.shared
 ```
 
-3. Checking Authorization Status:
+### Checking Authorization Status
 
 ```swift
 let status = store.authorizationStatus()
@@ -63,7 +63,7 @@ try await store.requestAccess()
 }
 ```
 
-4. Fetching Contacts:
+### Fetching Contacts
 
 * Fetch all contacts with required keys:
 
@@ -78,7 +78,7 @@ let contacts = try await store.fetch()
 
 * Fetch contacts by name:
 
-```swift 
+```swift
 let name = "John Doe"
 do {
 let contacts = try store.fetch(by: name)
@@ -88,7 +88,8 @@ let contacts = try store.fetch(by: name)
 }
 ```
 
-5. Managing Contacts:
+### Managing Contacts
+
 * Adding a new contact:
 
 ```swift
@@ -104,6 +105,7 @@ try store.add(newContact)
 ```
 
 * Updating a contact:
+
 ```swift
 // ... modify contact properties
 try store.update(contact)
@@ -116,9 +118,9 @@ try store.update(contact)
 try store.delete(contact)
 ```
 
-6. Customizing Save Requests (Optional):
+### Customizing Save Requests (Optional)
 
-By default, `ContactStore` uses a standard `CNSaveRequest` instance. 
+By default, `ContactStore` uses a standard `CNSaveRequest` instance.
 You can modify the static closure `ContactStore.makeCNSaveRequest` to inject custom logic or provide different request implementations.
 **Important:** To modify the `ContactStore.makeCNSaveRequest` closure, you must use the `use(_:)` method.
 
@@ -130,24 +132,24 @@ ContactStore.use { request in
 }
 ```
 
-This code updates the `ContactStore.makeCNSaveRequest` closure to accept a `CNSaveRequest` instance as an argument, 
+This code updates the `ContactStore.makeCNSaveRequest` closure to accept a `CNSaveRequest` instance as an argument,
 make any necessary changes to it, and then return the updated request.
 
-7. Customizing Authorization Status (Optional):
+### Customizing Authorization Status (Optional)
 
-By default, `ContactStore` uses the actual authorization status from the system's `CNContactStore`. 
+By default, `ContactStore` uses the actual authorization status from the system's `CNContactStore`.
 However, you can override this behavior with a custom closure to inject specific authorization statuses for testing or other purposes.
 
 Here's how to customize the authorization status:
 
 **Use the `use(_:)` method:**
 
-- Call the `use(_:)` method on `ContactStore` to provide a custom closure for creating `CNAuthorizationStatus` instances.
-- The closure accepts no arguments and returns a `CNAuthorizationStatus` value.
- 
+* Call the `use(_:)` method on `ContactStore` to provide a custom closure for creating `CNAuthorizationStatus` instances.
+* The closure accepts no arguments and returns a `CNAuthorizationStatus` value.
+
  **Implement the closure logic:**
 
-- Within the closure, specify the desired authorization status to be returned. 
+* Within the closure, specify the desired authorization status to be returned.
   You can return a fixed value or implement more complex logic based on your needs.
 
 ```swift

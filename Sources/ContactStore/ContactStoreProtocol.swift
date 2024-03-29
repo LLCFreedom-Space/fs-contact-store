@@ -22,7 +22,7 @@
 //  Created by Mykhailo Bondarenko on 26.03.2024.
 //
 
-@_exported import Contacts
+import Contacts
 
 /// A protocol defining essential methods for interacting with a contact store.
 public protocol ContactStoreProtocol {

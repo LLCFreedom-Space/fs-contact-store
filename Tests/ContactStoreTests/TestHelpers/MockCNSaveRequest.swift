@@ -22,7 +22,7 @@
 //  Created by Mykhailo Bondarenko on 27.03.2024.
 //
 
-import ContactStore
+import Contacts
 
 /// A mock implementation of CNSaveRequest for testing purposes.
 final class MockCNSaveRequest: CNSaveRequest {

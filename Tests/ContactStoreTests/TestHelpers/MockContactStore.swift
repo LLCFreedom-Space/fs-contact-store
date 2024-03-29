@@ -22,7 +22,7 @@
 //  Created by Mykhailo Bondarenko on 26.03.2024.
 //
 
-import ContactStore
+import Contacts
 
 /// A mock implementation of CNContactStore for testing purposes.
 final class MockContactStore: CNContactStore {
@@ -145,7 +145,7 @@ final class MockContactStore: CNContactStore {
         contact.phoneticFamilyName = "Do"
         contact.phoneticMiddleName = "Helk"
         contact.phoneticGivenName = "Jon"
-        contact.previousFamilyName = "Ivanov"
+        contact.previousFamilyName = "Holk"
         contact.emailAddresses = [
             CNLabeledValue(label: "email_label1", value: "some@mail.com"),
             CNLabeledValue(label: "email_label2", value: "another@mail.com")
