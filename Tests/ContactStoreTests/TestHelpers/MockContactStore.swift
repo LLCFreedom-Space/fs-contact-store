@@ -87,10 +87,10 @@ final class MockContactStore: CNContactStore {
         if let contact = request.addedContact {
             contacts.append(contact)
         } else if let contact = request.updatedContact {
-            contacts.removeAll(where: { $0.identifier == contact.identifier })
+            contacts.removeAll { $0.identifier == contact.identifier }
             contacts.append(contact)
         } else if let contact = request.deletedContact {
-            contacts.removeAll(where: { $0.identifier == contact.identifier })
+            contacts.removeAll { $0.identifier == contact.identifier }
         }
     }
     
