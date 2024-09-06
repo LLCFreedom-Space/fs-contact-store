@@ -22,7 +22,7 @@
 //  Created by Mykhailo Bondarenko on 23.03.2024.
 //
 
-import Contacts
+@_exported import Contacts
 
 /// A class providing a convenient interface for interacting with the Contacts framework.
 public final class ContactStore: ContactStoreProtocol {
