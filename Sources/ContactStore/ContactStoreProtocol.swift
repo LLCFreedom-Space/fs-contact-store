@@ -38,6 +38,8 @@ public protocol ContactStoreProtocol {
     func requestAccess() async throws -> Bool
     
     /// Fetches contacts from the store based on specified parameters.
+    /// This function should be called on a background thread to avoid blocking the UI,
+    /// especially when the contact database contains a large number of entries.
     ///
     /// - Parameters:
     ///   - keys: The keys to fetch for each contact.
@@ -49,7 +51,7 @@ public protocol ContactStoreProtocol {
         keysToFetch keys: [CNKeyDescriptor],
         order: CNContactSortOrder,
         unifyResults: Bool
-    ) async throws -> [CNContact]
+    ) throws -> [CNContact]
     
     /// Fetches contacts from the store based on a predicate.
     ///
