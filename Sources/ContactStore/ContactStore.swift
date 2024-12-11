@@ -68,6 +68,8 @@ public final class ContactStore: ContactStoreProtocol {
     }
     
     /// Fetches contacts from the store based on specified parameters.
+    /// This function should be called on a background thread to avoid blocking the UI,
+    /// especially when the contact database contains a large number of entries.
     ///
     /// - Parameters:
     ///   - keysToFetch: The keys (properties) to retrieve for each contact (defaults to required keys).
@@ -79,24 +81,18 @@ public final class ContactStore: ContactStoreProtocol {
         keysToFetch keys: [CNKeyDescriptor] = [CNContactVCardSerialization.descriptorForRequiredKeys()],
         order: CNContactSortOrder = .none,
         unifyResults: Bool = true
-    ) async throws -> [CNContact] {
-        return try await withCheckedThrowingContinuation { continuation in
-            var contacts: [CNContact] = []
-            let fetchRequest = CNContactFetchRequest(keysToFetch: keys)
-            fetchRequest.sortOrder = order
-            fetchRequest.unifyResults = unifyResults
-            do {
-                try autoreleasepool {
-                    // TODO: - Need implement handling of pointer in closure
-                    try store.enumerateContacts(with: fetchRequest) { contact, _ in
-                        contacts.append(contact)
-                    }
-                }
-                continuation.resume(returning: contacts)
-            } catch {
-                continuation.resume(throwing: error)
+    ) throws -> [CNContact] {
+        var contacts: [CNContact] = []
+        let fetchRequest = CNContactFetchRequest(keysToFetch: keys)
+        fetchRequest.sortOrder = order
+        fetchRequest.unifyResults = unifyResults
+        try autoreleasepool {
+            // TODO: - Need implement handling of pointer in closure
+            try self.store.enumerateContacts(with: fetchRequest) { contact, _ in
+                contacts.append(contact)
             }
         }
+        return contacts
     }
     
     /// Fetches contacts from the store based on a predicate for filtering.
